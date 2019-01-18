@@ -7,7 +7,7 @@ module.exports = {
         city: {
             type: 'string',
         },
-        limit: {
+        limite: {
             type: 'number',
         },
         cant: {
@@ -15,7 +15,7 @@ module.exports = {
             defaultsTo: 0,
         },
         gps: {
-          type: 'string',        
-        }
+            type: 'string',
+        },
     },
 };

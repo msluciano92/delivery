@@ -9,6 +9,7 @@ module.exports = {
         "max-len": [ "warn", 180 ] ,
         "func-names": ["error", "never"],
         "no-shadow": "off",
-        "no-await-in-loop": "off"
+        "no-await-in-loop": "off",
+        "arrow-body-style": "off",
     },
 };

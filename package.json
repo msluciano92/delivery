@@ -5,14 +5,17 @@
   "description": "a Sails application",
   "keywords": [],
   "dependencies": {
-    "sails": "^1.1.0",
+    "@sailshq/connect-redis": "^3.2.1",
+    "@sailshq/lodash": "^3.10.3",
+    "@sailshq/socket.io-redis": "^5.2.0",
+    "google-distance-matrix": "^1.1.1",
     "grunt": "1.0.1",
+    "sails": "^1.1.0",
+    "sails-disk": "^1.0.1",
     "sails-hook-grunt": "^3.1.0",
     "sails-hook-orm": "^2.1.1",
     "sails-hook-sockets": "^1.5.5",
-    "@sailshq/connect-redis": "^3.2.1",
-    "@sailshq/socket.io-redis": "^5.2.0",
-    "@sailshq/lodash": "^3.10.3"
+    "sails-mysql": "^1.0.1"
   },
   "devDependencies": {
     "@sailshq/eslint": "^4.19.3",
@@ -26,7 +29,7 @@
     "test": "NODE_ENV=test jest --maxWorkers=1",
     "test:watch": "npm run test -- --watch",
     "test:coverage": "npm run test -- --coverage",
-    "lint": "eslint api/**/**/*.js",
+    "lint": "eslint api/**/**/*.js api/**/*.js tests/**/*.js --fix",
     "custom-tests": "echo \"(No other custom tests yet.)\" && echo"
   },
   "main": "app.js",
