@@ -1,72 +1,39 @@
 module.exports = {
-    async createPackage(req, res) {
+    async createPackageAndSendWarehouse(req, res) {
         try {
-            const arrDestinationsOrder = await sails.helpers.distance.distanceMatrix.with({ origin: req.body.gps });
-            if (arrDestinationsOrder !== undefined && arrDestinationsOrder.length > 0) {
-                const input = req.body;
-                const packageReceived = await Package.create({ date_send: input.date_send, gps: input.gps }).fetch();
-                if (packageReceived !== undefined) {
-                    let i = 0;
-                    let ok = false;
-                    while (i < arrDestinationsOrder.length && !ok) {
-                        const cityFirst = arrDestinationsOrder[i].city;
-                        const warehouse = await Warehouse.findOne({ city: cityFirst });
-                        ok = await sails.helpers.package.transferPackage.with({ package: packageReceived, warehouse });
-                        if (!ok) {
-                            ok = await sails.helpers.package.transferPackageNextWarehouse.with(
-                                {
-                                    arrDestinationsOrder,
-                                    i,
-                                    package: packageReceived,
-                                    warehouse,
-                                },
-                            );
-                        }
-                        i += 1;
-                    }
-                    if (ok) {
-                        res.status(200).json({ status: 200, message: '¡Package received and tranferred!' });
-                    } else {
-                        res.status(400).json({ status: 400, message: 'Error receiving the package' });
-                    }
-                } else {
-                    res.status(400).json({ status: 400, message: 'Error at created package' });
-                }
+            const input = req.body;
+            const sendPackage = await sails.helpers.warehouse.sendPackageWarehouse.with({ city: input.city, date_send_package: input.date_send });
+            if (sendPackage) {
+                res.status(201).json({ status: 201, message: '¡Package received and tranferred!' });
             } else {
-                res.status(400).json({ status: 400, message: 'Destinations undefined or empty' });
+                res.status(400).json({ status: 400, message: 'Error receiving the package' });
             }
         } catch (e) {
             res.status(500);
         }
     },
 
-    async sendPackage(req, res) {
+    async sendPackageDestination(req, res) {
         try {
             if (req.body.id !== undefined) {
                 const packageReceived = await Package.findOne({ id: req.body.id });
                 if (packageReceived !== undefined) {
                     const warehouse = await Warehouse.findOne({ id: packageReceived.warehouse_id });
                     if (warehouse !== undefined) {
-                        const cant = warehouse.cant - 1;
-                        const updWarehouse = await Warehouse.updateOne({ id: warehouse.id }).set({ cant });
-                        if (updWarehouse !== undefined) {
-                            const updPackage = await Package.updateOne({ id: packageReceived.id }).set({ state: 'Send' });
-                            if (updPackage !== undefined) {
-                                res.status(200).json('¡Package send!');
-                            } else {
-                                res.status(400).json('Error update package');
-                            }
+                        const ok = await sails.helpers.package.sendDestination.with({ warehouse, package: packageReceived });
+                        if (ok) {
+                            res.status(200).json({ status: 200, message: '¡Package send to destination!' });
                         } else {
-                            res.status(400).json('Error update warehouse');
+                            res.status(400).json({ status: 400, message: 'Error sending package destination' });
                         }
                     } else {
-                        res.status(400).json('Error loading warehouse');
+                        res.status(400).json({ status: 400, message: 'Error loading warehouse' });
                     }
                 } else {
-                    res.status(400).json('Error loading package');
+                    res.status(400).json({ status: 400, message: 'Error loading package' });
                 }
             } else {
-                res.status(400).json('Indicate package');
+                res.status(400).json({ status: 400, message: 'Indicate package' });
             }
         } catch (e) {
             res.status(500);

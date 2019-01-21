@@ -21,7 +21,7 @@ module.exports = {
 
 
     async fn(inputs, exits) {
-        const updPackage = await Package.updateOne({ id: inputs.package.id }).set({ state: 'Transferred', warehouse_id: inputs.warehouse.id });
+        const updPackage = await Package.updateOne({ id: inputs.package.id }).set({ state: 'In warehouse', warehouse_id: inputs.warehouse.id });
         if (updPackage !== undefined) {
             const cant = inputs.warehouse.cant + 1;
             const updWarehouse = await Warehouse.updateOne({ id: inputs.warehouse.id }).set({ cant });

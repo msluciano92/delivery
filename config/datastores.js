@@ -31,17 +31,13 @@ module.exports.datastores = {
   * (For production configuration, see `config/env/production.js`.)          *
   *                                                                          *
   ***************************************************************************/
-
-  default:
-    process.env.NODE_ENV === 'test' ?
-        { adapter: require('sails-disk'),
-          inMemoryOnly: true,
-          migrate: 'alter' }
-          :
-        { adapter: require('sails-mysql'),
-          url: 'mysql://francisco:francisco@localhost:3306/company',
-          connectionLimit: 0 },
-
+  default: process.env.NODE_ENV === 'test' ?
+      { adapter: require("sails-disk"),
+        inMemoryOnly: true,
+        migrate: 'alter', }
+    : { adapter: require("sails-mysql"),
+        url: 'mysql://francisco:francisco@localhost:3306/company',
+        connectionLimit: 0, },
 
 
     /***************************************************************************

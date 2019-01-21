@@ -8,14 +8,15 @@
     "@sailshq/connect-redis": "^3.2.1",
     "@sailshq/lodash": "^3.10.3",
     "@sailshq/socket.io-redis": "^5.2.0",
-    "google-distance-matrix": "^1.1.1",
     "grunt": "1.0.1",
     "sails": "^1.1.0",
     "sails-disk": "^1.0.1",
     "sails-hook-grunt": "^3.1.0",
     "sails-hook-orm": "^2.1.1",
     "sails-hook-sockets": "^1.5.5",
-    "sails-mysql": "^1.0.1"
+    "sails-memory": "^0.10.7",
+    "sails-mysql": "^1.0.1",
+    "google-distance-matrix": "^1.1.1"
   },
   "devDependencies": {
     "@sailshq/eslint": "^4.19.3",

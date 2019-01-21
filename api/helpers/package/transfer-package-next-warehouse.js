@@ -5,7 +5,7 @@ module.exports = {
     description: '',
 
     inputs: {
-        arrDestinationsOrder: {
+        arrDestinations: {
             type: 'ref',
         },
         i: {
@@ -27,24 +27,21 @@ module.exports = {
     },
 
     async fn(inputs, exits) {
-        const arrDestinations = inputs.arrDestinationsOrder;
+        const arrDestinationsOrder = inputs.arrDestinations;
         const ind = inputs.i;
-        const packageReceived = inputs.package;
         const warehouseNext = inputs.warehouse;
+        const packageReceived = inputs.package;
         const iNext = ind + 1;
-        if (iNext < arrDestinations.length) {
-            const distanceCityFirst = arrDestinationsOrder[i].distance;
-            const distanceCityNext = arrDestinationsOrder[i + 1].distance;
+        if (iNext < arrDestinationsOrder.length) {
+            const distanceCityFirst = arrDestinationsOrder[ind].distance;
+            const distanceCityNext = arrDestinationsOrder[iNext].distance;
             const resultDistance = distanceCityNext - distanceCityFirst;
             const priceKm = 0.2; // lo dejo fijo ... (price = 1 USD * 5 km)
             const penality = 70; // lo dejo fijo ... (70 USD X Day's)
             if ((resultDistance * priceKm) < penality) {
-                const resp = await sails.helpers.package.transfer.with({ package: packageReceived, warehouse: warehouseNext });
-                if (resp) {
-                    exits.success(resp);
-                }
+                return exits.success(await sails.helpers.package.sendWarehouse.with({ package: packageReceived, warehouse: warehouseNext }));
             }
         }
-        exits.success(false);
+        return exits.success(false);
     },
 };

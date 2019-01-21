@@ -29,7 +29,7 @@ module.exports = {
                 cumple = ((Math.round(warehouseFirst.limite * 0.95)) > warehouseFirst.cant);
             }
             if (cumple) {
-                return exits.success(await sails.helpers.package.transfer.with({ package: packageReceived, warehouse: warehouseFirst }));
+                return exits.success(await sails.helpers.package.sendWarehouse.with({ package: packageReceived, warehouse: warehouseFirst }));
             }
         }
         return exits.success(false);

@@ -20,8 +20,8 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/': { view: 'pages/homepage' },
-  'POST /package/create-package': 'PackageController.createPackage',
-  'PUT /package/send-package': 'PackageController.sendPackage',
+  'POST /package/create-send-package': 'PackageController.createPackageAndSendWarehouse',
+  'PUT /package/send-package': 'PackageController.sendPackageDestination',
 
 
   /***************************************************************************
