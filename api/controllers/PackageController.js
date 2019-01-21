@@ -9,7 +9,7 @@ module.exports = {
                 res.status(400).json({ status: 400, message: 'Error receiving the package' });
             }
         } catch (e) {
-            res.status(500);
+            res.status(500).json({ status:500,  message: e.code });
         }
     },
 
