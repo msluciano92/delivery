@@ -25,36 +25,43 @@ module.exports = {
 
     },
 
-
     async fn(inputs, exits) {
         let i = 0;
-        let ok = false;
+        let isSendPackage = false;
         const origin = inputs.city;
         const dateSend = inputs.date_send_package;
         const packageCreate = await sails.helpers.package.create.with({ city: origin, date_send_package: dateSend });
-        if (packageCreate.created) {
-            const packageCreated = packageCreate.package;
+        const createdPackage = packageCreate.created;
+        const newPackage = packageCreate.package;
+        const { c, p } = { ...packageCreate };
+        console.log('c: ');
+        console.log(c);
+        console.log('p: ');
+        console.log(p);
+        if (createdPackage) {
             const arrDestinations = await sails.helpers.distance.distanceMatrix.with({ origin });
-            while (i < arrDestinations.length && !ok) {
+            while (i < arrDestinations.length && !isSendPackage) {
                 const cityFirst = arrDestinations[i].city;
                 const warehouse = await Warehouse.findOne({ city: cityFirst });
-                ok = await sails.helpers.package.transferPackage.with({ package: packageCreated, warehouse });
-                if (!ok) {
-                    ok = await sails.helpers.package.transferPackageNextWarehouse.with(
-                        {
-                            arrDestinations,
-                            i,
-                            package: packageCreated,
-                            warehouse,
-                        },
-                    );
+                isSendPackage = await sails.helpers.package.transferPackage.with({ package: newPackage, warehouse });
+                if (!isSendPackage) {
+                    if ((i + 1) < arrDestinations.length) {
+                        isSendPackage = await sails.helpers.package.transferPackageNextWarehouse.with(
+                            {
+                                arrDestinations,
+                                i,
+                                package: newPackage,
+                                warehouse,
+                            },
+                        );
+                    }
                 }
                 i += 1;
             }
-            if (!ok) {
-                await Package.delete({ id: packageCreate.package.id });
+            if (!isSendPackage) {
+                await Package.destroyOne({ id: newPackage.id });
             }
         }
-        return exits.success(ok);
+        return exits.success(isSendPackage);
     },
 };

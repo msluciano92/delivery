@@ -11,5 +11,5 @@ module.exports = {
         "no-shadow": "off",
         "no-await-in-loop": "off",
         "arrow-body-style": "off",
-    },
+    }
 };

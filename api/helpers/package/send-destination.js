@@ -1,11 +1,8 @@
 module.exports = {
 
-
     friendlyName: 'Send destination',
 
-
     description: '',
-
 
     inputs: {
         warehouse: {
@@ -16,7 +13,6 @@ module.exports = {
         },
     },
 
-
     exits: {
         success: {
             description: 'All done.',
@@ -25,12 +21,12 @@ module.exports = {
 
 
     async fn(inputs, exits) {
-        const warehouseFirst = inputs.warehouse;
-        const packageReceived = inputs.package;
-        const updPackage = await Package.updateOne({ id: packageReceived.id }).set({ state: 'In destination' });
+        const warehouseDestination = inputs.warehouse;
+        const packageToSend = inputs.package;
+        const updPackage = await Package.updateOne({ id: packageToSend.id }).set({ state: 'In destination' });
         if (updPackage !== undefined) {
-            const cant = warehouseFirst.cant - 1;
-            const updWarehouse = await Warehouse.updateOne({ id: warehouseFirst.id }).set({ cant });
+            const cant = warehouseDestination.cant - 1;
+            const updWarehouse = await Warehouse.updateOne({ id: warehouseDestination.id }).set({ cant });
             if (updWarehouse !== undefined) {
                 return exits.success(true);
             }
