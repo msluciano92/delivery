@@ -33,11 +33,6 @@ module.exports = {
         const packageCreate = await sails.helpers.package.create.with({ city: origin, date_send_package: dateSend });
         const createdPackage = packageCreate.created;
         const newPackage = packageCreate.package;
-        const { c, p } = { ...packageCreate };
-        console.log('c: ');
-        console.log(c);
-        console.log('p: ');
-        console.log(p);
         if (createdPackage) {
             const arrDestinations = await sails.helpers.distance.distanceMatrix.with({ origin });
             while (i < arrDestinations.length && !isSendPackage) {
