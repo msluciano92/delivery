@@ -112,7 +112,7 @@ describe('POST /package/create-send-package - special case, satured warehouses '
 describe('PUT /package/send-package', () => {
     beforeEach((done) => {
         app.post('/package').send({
-            id: 1, date_send: '2018-12-12', gps: 'Rosario, Argentina', state: 'In warehouse', warehouse_id: 1,
+            id: 1, date_send: '2018-12-12', city: 'Rosario, Argentina', state: 'In warehouse', warehouse_id: 1,
         }).end((err) => {
             if (err) throw err;
             app.post('/warehouse').send({
@@ -190,7 +190,7 @@ describe('PUT /package/send-package', () => {
 describe('PUT /package/send-package - special case, warehouse_id in package undefined', () => {
     beforeEach((done) => {
         app.post('/package').send({
-            id: 1, date_send: '2018-12-12', gps: 'Rosario, Argentina', state: 'In warehouse', warehouse_id: 3,
+            id: 1, date_send: '2018-12-12', city: 'Rosario, Argentina', state: 'In warehouse', warehouse_id: 3,
         }).end((err) => {
             if (err) throw err;
             app.post('/warehouse').send({

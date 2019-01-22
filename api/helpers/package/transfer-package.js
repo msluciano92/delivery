@@ -2,7 +2,7 @@ module.exports = {
 
     friendlyName: 'Transfer package',
 
-    description: '',
+    description: 'Transfer package to warehouse',
 
     inputs: {
         package: {
@@ -19,17 +19,16 @@ module.exports = {
         },
     },
 
-
     async fn(inputs, exits) {
-        const warehouseFirst = inputs.warehouse;
-        const packageReceived = inputs.package;
-        if (warehouseFirst !== undefined) {
+        const warehouse = { ...inputs.warehouse };
+        const newPackage = inputs.package;
+        if (warehouse !== undefined) {
             let cumple = true;
-            if (warehouseFirst.cant > 0) {
-                cumple = ((Math.round(warehouseFirst.limite * 0.95)) > warehouseFirst.cant);
+            if (warehouse.cant > 0) {
+                cumple = ((Math.round(warehouse.limite * 0.95)) > warehouse.cant);
             }
             if (cumple) {
-                return exits.success(await sails.helpers.package.sendWarehouse.with({ package: packageReceived, warehouse: warehouseFirst }));
+                return exits.success(await sails.helpers.package.sendWarehouse.with({ package: newPackage, warehouse }));
             }
         }
         return exits.success(false);

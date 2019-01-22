@@ -19,14 +19,13 @@ module.exports = {
         },
     },
 
-
     async fn(inputs, exits) {
-        const warehouseDestination = inputs.warehouse;
+        const warehouse = { ...inputs.warehouse };
         const packageToSend = inputs.package;
         const updPackage = await Package.updateOne({ id: packageToSend.id }).set({ state: 'In destination' });
         if (updPackage !== undefined) {
-            const cant = warehouseDestination.cant - 1;
-            const updWarehouse = await Warehouse.updateOne({ id: warehouseDestination.id }).set({ cant });
+            const cant = warehouse.cant - 1;
+            const updWarehouse = await Warehouse.updateOne({ id: warehouse.id }).set({ cant });
             if (updWarehouse !== undefined) {
                 return exits.success(true);
             }

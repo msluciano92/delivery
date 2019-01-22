@@ -9,7 +9,7 @@ module.exports = {
             type: 'string',
             required: true,
         },
-        gps: {
+        city: {
             type: 'string',
             required: true,
         },

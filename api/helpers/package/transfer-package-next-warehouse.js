@@ -2,7 +2,7 @@ module.exports = {
 
     friendlyName: 'Transfer package next warehouse',
 
-    description: '',
+    description: 'Transfer package to next warehouse, why first satured.',
 
     inputs: {
         arrDestinations: {
@@ -19,7 +19,6 @@ module.exports = {
         },
     },
 
-
     exits: {
         success: {
             description: 'All done.',
@@ -27,14 +26,14 @@ module.exports = {
     },
 
     async fn(inputs, exits) {
-        const arrDestinationsOrder = inputs.arrDestinations;
+        const arrDestinations = [...inputs.arrDestinations];
         const ind = inputs.i;
-        const warehouseNext = inputs.warehouse;
-        const newPackage = inputs.package;
         const iNext = ind + 1;
-        if (iNext < arrDestinationsOrder.length) {
-            const distanceCityFirst = arrDestinationsOrder[ind].distance;
-            const distanceCityNext = arrDestinationsOrder[iNext].distance;
+        if (iNext < arrDestinations.length) {
+            const warehouseNext = inputs.warehouse;
+            const newPackage = inputs.package;
+            const distanceCityFirst = arrDestinations[ind].distance;
+            const distanceCityNext = arrDestinations[iNext].distance;
             const resultDistance = distanceCityNext - distanceCityFirst;
             const priceKm = 0.2; //  ... (price = 1 USD * 5 km)
             const penality = 70; //  ... (70 USD X Day)

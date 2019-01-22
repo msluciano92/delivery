@@ -1,11 +1,8 @@
 module.exports = {
 
-
     friendlyName: 'Create',
 
-
-    description: 'Create package.',
-
+    description: 'Create a package.',
 
     inputs: {
         city: {
@@ -16,7 +13,6 @@ module.exports = {
         },
     },
 
-
     exits: {
 
         success: {
@@ -25,15 +21,14 @@ module.exports = {
 
     },
 
-
     async fn(inputs, exits) {
         const origin = inputs.city;
         const dateSend = inputs.date_send_package;
-        const packageReceived = await Package.create({ date_send: dateSend, gps: origin }).fetch();
+        const packageReceived = await Package.create({ date_send: dateSend, city: origin }).fetch();
         if (packageReceived !== undefined) {
-            return exits.success({ created: true, package: packageReceived });
+            return exits.success({ isCreatedPackage: true, newPackage: packageReceived });
         }
-        return exits.success({ created: false, package: undefined });
+        return exits.success({ isCreatedPackage: false, newPackage: undefined });
     },
 
 };
