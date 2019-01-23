@@ -28,7 +28,7 @@ module.exports = {
             }
             if (cumple) {
                 const newPackage = inputs.package;
-                return exits.success(await sails.helpers.package.sendWarehouse.with({ package: newPackage, warehouse }));
+                return exits.success(await sails.helpers.package.sendWarehouse.with({ warehouse, package: newPackage }));
             }
         }
         return exits.success(false);

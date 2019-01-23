@@ -11,10 +11,10 @@ module.exports = {
         i: {
             type: 'number',
         },
-        package: {
+        warehouse: {
             type: 'ref',
         },
-        warehouse: {
+        package: {
             type: 'ref',
         },
     },
@@ -40,7 +40,7 @@ module.exports = {
             if ((resultDistance * priceKm) < penality && (warehouse.cant < warehouse.limite)) {
                 // ... Paga multa, a menos que no tenga lugar físico ..
                 const newPackage = inputs.package;
-                return exits.success(await sails.helpers.package.sendWarehouse.with({ package: newPackage, warehouse }));
+                return exits.success(await sails.helpers.package.sendWarehouse.with({ warehouse, package: newPackage }));
             }
         }
         return exits.success(false);

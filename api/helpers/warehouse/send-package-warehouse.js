@@ -37,8 +37,8 @@ module.exports = {
                         {
                             arrDestinations,
                             i,
-                            package: newPackage,
                             warehouse,
+                            package: newPackage,
                         },
                     );
                 }

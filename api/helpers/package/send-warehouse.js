@@ -5,10 +5,10 @@ module.exports = {
     description: 'Transfer package.',
 
     inputs: {
-        package: {
+        warehouse: {
             type: 'ref',
         },
-        warehouse: {
+        package: {
             type: 'ref',
         },
     },
