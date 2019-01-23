@@ -23,7 +23,7 @@ module.exports = {
             });
             const apiKey = 'AIzaSyCx7mYJLJRDPdyynRdX4UGQBY79NTtQXYM';
             distance.key(apiKey);
-            await distance.matrix(origins, destinations, (err, distances) => {
+            return distance.matrix(origins, destinations, (err, distances) => {
                 if (!err && distances.status === 'OK') {
                     if (distances === undefined || distances.rows[0].elements[0].distance === undefined) {
                         return exits.success({ result: false, arrDestinations: [] });
@@ -47,9 +47,8 @@ module.exports = {
                     return exits.success({ result: true, arrDestinations });
                 }
                 return exits.success({ result: false, arrDestinations: [] });
-            });            
-        } else {
-            return exits.success({ result: false, arrDestinations: [] });
+            });
         }
+        return exits.success({ result: false, arrDestinations: [] });
     },
 };
