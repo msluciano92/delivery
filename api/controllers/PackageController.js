@@ -16,7 +16,7 @@ module.exports = {
     async sendPackageDestination(req, res) {
         try {
             if (req.body.id !== undefined) {
-                const packageToSend = await Package.findOne({ id: req.body.id });
+                const packageToSend = await Package.findOne({ where: { and: [{ id: req.body.id }, { state: 'In warehouse' }] } });
                 if (packageToSend !== undefined) {
                     const warehouse = await Warehouse.findOne({ id: packageToSend.warehouse_id });
                     if (warehouse !== undefined) {

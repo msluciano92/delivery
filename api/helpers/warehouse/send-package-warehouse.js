@@ -21,12 +21,12 @@ module.exports = {
     },
 
     async fn(inputs, exits) {
-        let i = 0;
         let isSendPackage = false;
         const origin = inputs.city;
         const dateSend = inputs.date_send_package;
         const { isCreatedPackage, newPackage } = await sails.helpers.package.create.with({ city: origin, date_send_package: dateSend });
         if (isCreatedPackage) {
+            let i = 0;
             const { result, arrDestinations } = await sails.helpers.distance.distanceMatrix.with({ origin });
             while (result && i < arrDestinations.length && !isSendPackage) {
                 const cityFirst = arrDestinations[i].city;

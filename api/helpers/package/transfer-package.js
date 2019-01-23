@@ -21,13 +21,13 @@ module.exports = {
 
     async fn(inputs, exits) {
         const warehouse = { ...inputs.warehouse };
-        const newPackage = inputs.package;
-        if (warehouse !== undefined) {
+        if (warehouse !== undefined && warehouse.cant < warehouse.limite) {
             let cumple = true;
             if (warehouse.cant > 0) {
                 cumple = ((Math.round(warehouse.limite * 0.95)) > warehouse.cant);
             }
             if (cumple) {
+                const newPackage = inputs.package;
                 return exits.success(await sails.helpers.package.sendWarehouse.with({ package: newPackage, warehouse }));
             }
         }

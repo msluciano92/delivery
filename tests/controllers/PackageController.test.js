@@ -221,3 +221,32 @@ describe('PUT /package/send-package - special case, warehouse_id in package unde
             });
     });
 });
+
+describe('PUT /package/send-package - Send package when invalid state', () => {
+    beforeEach((done) => {
+        app.post('/package').send({
+            id: 1, date_send: '2018-12-12', city: 'Rosario, Argentina', state: 'In destination', warehouse_id: 1,
+        }).end((err) => {
+            if (err) throw err;
+            done();
+        });
+    });
+
+    afterEach(async (done) => {
+        await sails.models.package.destroy({}).fetch();
+        await sails.models.warehouse.destroy({}).fetch();
+        done();
+    });
+
+    it('Return error loading package. Invalid state.', (done) => {
+        app
+            .put('/package/send-package')
+            .send({ id: 1 })
+            .expect(400)
+            .end((err, res) => {
+                if (err) throw err;
+                expect('Error loading package').toBe(res.body.message);
+                done();
+            });
+    });
+});

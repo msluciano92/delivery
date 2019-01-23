@@ -28,7 +28,7 @@ module.exports = {
         if (packageReceived !== undefined) {
             return exits.success({ isCreatedPackage: true, newPackage: packageReceived });
         }
-        return exits.success({ isCreatedPackage: false, newPackage: undefined });
+        return exits.success({ isCreatedPackage: false });
     },
 
 };
