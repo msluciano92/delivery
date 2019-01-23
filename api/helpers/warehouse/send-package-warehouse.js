@@ -25,6 +25,9 @@ module.exports = {
         const origin = inputs.city;
         const dateSend = inputs.date_send_package;
         const { isCreatedPackage, newPackage } = await sails.helpers.package.create.with({ city: origin, date_send_package: dateSend });
+        const resp = {};
+        resp.status = 400;
+        resp.message = 'Error receiving the package in warehouse';
         if (isCreatedPackage) {
             let i = 0;
             const { result, arrDestinations } = await sails.helpers.distance.distanceMatrix.with({ origin });
@@ -46,8 +49,11 @@ module.exports = {
             }
             if (!isSendPackage) {
                 await Package.destroyOne({ id: newPackage.id });
+            } else {
+                resp.status = 201;
+                resp.message = '¡Package received and tranferred!';
             }
         }
-        return exits.success(isSendPackage);
+        return exits.success(resp);
     },
 };

@@ -30,5 +30,4 @@ module.exports = {
         }
         return exits.success({ isCreatedPackage: false });
     },
-
 };

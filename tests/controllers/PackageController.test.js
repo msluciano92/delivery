@@ -55,11 +55,11 @@ describe('POST /package/create-send-package', () => {
                 app
                     .post('/package/create-send-package')
                     .send({ city: 'La Plata, Buenos Aires, Argentina' })
-                    .expect(500)
+                    .expect(400)
                     .end((err, res) => {
                         if (err) throw err;
-                        expect(500).toBe(res.body.status);
-                        expect('E_INVALID_NEW_RECORD').toBe(res.body.message);
+                        expect(400).toBe(res.body.status);
+                        expect('Missing parameters. Or invalid numbers parameters').toBe(res.body.message);
                         app
                             .get('/package')
                             .end((err, res) => {
@@ -80,11 +80,11 @@ describe('POST /package/create-send-package', () => {
                 app
                     .post('/package/create-send-package')
                     .send({ date_send: '2018-11-02' })
-                    .expect(500)
+                    .expect(400)
                     .end((err, res) => {
                         if (err) throw err;
-                        expect(500).toBe(res.body.status);
-                        expect('E_INVALID_NEW_RECORD').toBe(res.body.message);
+                        expect(400).toBe(res.body.status);
+                        expect('Missing parameters. Or invalid numbers parameters').toBe(res.body.message);
                         app
                             .get('/package')
                             .end((err, res) => {
@@ -104,11 +104,11 @@ describe('POST /package/create-send-package', () => {
                 expect(0).toBe(res.body.length);
                 app
                     .post('/package/create-send-package')
-                    .expect(500)
+                    .expect(400)
                     .end((err, res) => {
                         if (err) throw err;
-                        expect(500).toBe(res.body.status);
-                        expect('E_INVALID_NEW_RECORD').toBe(res.body.message);
+                        expect(400).toBe(res.body.status);
+                        expect('Missing parameters. Or invalid numbers parameters').toBe(res.body.message);
                         app
                             .get('/package')
                             .end((err, res) => {
@@ -219,7 +219,7 @@ describe('PUT /package/send-package', () => {
             });
     });
 
-    it('Return error loading package. ', (done) => {
+    it('Return error, loading package. ', (done) => {
         app
             .put('/package/send-package')
             .send({ id: 10 })
@@ -240,7 +240,7 @@ describe('PUT /package/send-package', () => {
             .end((err, res) => {
                 if (err) throw err;
                 expect(400).toBe(res.body.status);
-                expect('Indicate package').toBe(res.body.message);
+                expect('Indicate package. Check count parameters. ').toBe(res.body.message);
                 done();
             });
     });
@@ -252,7 +252,7 @@ describe('PUT /package/send-package', () => {
             .end((err, res) => {
                 if (err) throw err;
                 expect(400).toBe(res.body.status);
-                expect('Indicate package').toBe(res.body.message);
+                expect('Indicate package. Check count parameters. ').toBe(res.body.message);
                 done();
             });
     });
@@ -326,7 +326,7 @@ describe('PUT /package/send-package - Send package when invalid state', () => {
         done();
     });
 
-    it('Return error loading package. Invalid state. Warehouse cant not modify.', (done) => {
+    it('Return error, loading package. Invalid state. Warehouse cant not modify.', (done) => {
         app
             .get('/warehouse/1')
             .end((err, res) => {

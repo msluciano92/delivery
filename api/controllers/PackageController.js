@@ -2,11 +2,11 @@ module.exports = {
     async createPackageAndSendWarehouse(req, res) {
         try {
             const input = req.body;
-            const isSendPackageWarehouse = await sails.helpers.warehouse.sendPackageWarehouse.with({ city: input.city, date_send_package: input.date_send });
-            if (isSendPackageWarehouse) {
-                res.status(201).json({ status: 201, message: '¡Package received and tranferred!' });
+            if (input.city !== undefined && input.date_send !== undefined && Object.keys(input).length === 2) {
+                const { status, message } = await sails.helpers.warehouse.sendPackageWarehouse.with({ city: input.city, date_send_package: input.date_send });
+                res.status(status).json({ status, message });
             } else {
-                res.status(400).json({ status: 400, message: 'Error receiving the package in warehouse' });
+                res.status(400).json({ status: 400, message: 'Missing parameters. Or invalid numbers parameters' });
             }
         } catch (e) {
             res.status(500).json({ status: 500, message: e.code });
@@ -15,25 +15,12 @@ module.exports = {
 
     async sendPackageDestination(req, res) {
         try {
-            if (req.body.id !== undefined) {
-                const packageToSend = await Package.findOne({ where: { and: [{ id: req.body.id }, { state: 'In warehouse' }] } });
-                if (packageToSend !== undefined) {
-                    const warehouse = await Warehouse.findOne({ id: packageToSend.warehouse_id });
-                    if (warehouse !== undefined) {
-                        const isSentPackageDestination = await sails.helpers.package.sendDestination.with({ warehouse, package: packageToSend });
-                        if (isSentPackageDestination) {
-                            res.status(200).json({ status: 200, message: '¡Package sent to destination!' });
-                        } else {
-                            res.status(400).json({ status: 400, message: 'Error sending package destination' });
-                        }
-                    } else {
-                        res.status(400).json({ status: 400, message: 'Error loading warehouse' });
-                    }
-                } else {
-                    res.status(400).json({ status: 400, message: 'Error loading package' });
-                }
+            const input = req.body;
+            if (input.id !== undefined && Object.keys(input).length === 1) {
+                const { status, message } = await sails.helpers.package.sendPackageDestination.with({ packageId: input.id });
+                res.status(status).json({ status, message });
             } else {
-                res.status(400).json({ status: 400, message: 'Indicate package' });
+                res.status(400).json({ status: 400, message: 'Indicate package. Check count parameters. ' });
             }
         } catch (e) {
             res.status(500);
