@@ -1,6 +1,6 @@
 # company-logic
 
-API CALL'S
+API Endpoints
 
   POST /package/create-send-package
     parameters:
