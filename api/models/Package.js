@@ -1,5 +1,4 @@
 module.exports = {
-
     attributes: {
         state: {
             type: 'string',

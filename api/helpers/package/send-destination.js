@@ -2,7 +2,7 @@ module.exports = {
 
     friendlyName: 'Send destination',
 
-    description: '',
+    description: 'Send package to client destination. Decrement availability the warehouse.',
 
     inputs: {
         warehouse: {
@@ -32,5 +32,4 @@ module.exports = {
         }
         return exits.success(false);
     },
-
 };

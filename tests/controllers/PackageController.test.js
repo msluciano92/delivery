@@ -46,7 +46,7 @@ describe('POST /package/create-send-package', () => {
             });
     });
 
-    it('Return error in database, empty date_send parameter. Numbers of packages unmodifield.', (done) => {
+    it('Return error in database, empty dateSend parameter. Numbers of packages not modifield.', (done) => {
         app
             .get('/package')
             .end((err, res) => {

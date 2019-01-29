@@ -2,7 +2,7 @@ module.exports = {
 
     friendlyName: 'Transfer package',
 
-    description: 'Transfer package to warehouse',
+    description: 'Check condition the warehouse for send package.',
 
     inputs: {
         package: {

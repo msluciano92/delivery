@@ -1,8 +1,8 @@
 module.exports = {
 
-    friendlyName: 'Transfer',
+    friendlyName: 'Send to warehouse',
 
-    description: 'Transfer package.',
+    description: 'Transfer package received by parameter to the warehouse. Increment availability the warehouse',
 
     inputs: {
         warehouse: {
@@ -22,7 +22,7 @@ module.exports = {
     async fn(inputs, exits) {
         const newPackage = inputs.package;
         const warehouse = { ...inputs.warehouse };
-        const updPackage = await Package.updateOne({ id: newPackage.id }).set({ state: 'In warehouse', warehouse_id: warehouse.id });
+        const updPackage = await Package.updateOne({ id: newPackage.id }).set({ state: 'In warehouse', warehouseId: warehouse.id });
         if (updPackage !== undefined) {
             const cantPackages = warehouse.cantPackages + 1;
             const updWarehouse = await Warehouse.updateOne({ id: warehouse.id }).set({ cantPackages });

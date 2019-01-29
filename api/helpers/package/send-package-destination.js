@@ -1,11 +1,8 @@
 module.exports = {
 
-
     friendlyName: 'Send package destination',
 
-
-    description: '',
-
+    description: 'Search package received by parameter for send to the client  ',
 
     inputs: {
         packageId: {
@@ -13,15 +10,11 @@ module.exports = {
         },
     },
 
-
     exits: {
-
         success: {
             description: 'All done.',
         },
-
     },
-
 
     async fn(inputs, exits) {
         const resp = {};
@@ -45,5 +38,4 @@ module.exports = {
         }
         return exits.success(resp);
     },
-
 };
