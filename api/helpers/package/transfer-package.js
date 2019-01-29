@@ -21,10 +21,10 @@ module.exports = {
 
     async fn(inputs, exits) {
         const warehouse = { ...inputs.warehouse };
-        if (warehouse !== undefined && warehouse.cant < warehouse.limite) {
+        if (warehouse !== undefined && warehouse.cantPackages < warehouse.limite) {
             let cumple = true;
-            if (warehouse.cant > 0) {
-                cumple = ((Math.round(warehouse.limite * 0.95)) > warehouse.cant);
+            if (warehouse.cantPackages > 0) {
+                cumple = ((Math.round(warehouse.limite * 0.95)) > warehouse.cantPackages);
             }
             if (cumple) {
                 const newPackage = inputs.package;

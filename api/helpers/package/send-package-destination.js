@@ -28,7 +28,7 @@ module.exports = {
         resp.status = 400;
         const packageToSend = await Package.findOne({ where: { and: [{ id: inputs.packageId }, { state: 'In warehouse' }] } });
         if (packageToSend !== undefined) {
-            const warehouse = await Warehouse.findOne({ id: packageToSend.warehouse_id });
+            const warehouse = await Warehouse.findOne({ id: packageToSend.warehouseId });
             if (warehouse !== undefined) {
                 const isSentPackageDestination = await sails.helpers.package.sendDestination.with({ warehouse, package: packageToSend });
                 if (isSentPackageDestination) {

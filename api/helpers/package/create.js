@@ -8,7 +8,7 @@ module.exports = {
         city: {
             type: 'string',
         },
-        date_send_package: {
+        dateSendPackage: {
             type: 'string',
         },
     },
@@ -23,7 +23,7 @@ module.exports = {
 
     async fn(inputs, exits) {
         const origin = inputs.city;
-        const dateSend = inputs.date_send_package;
+        const dateSend = inputs.dateSendPackage;
         const newPackage = await Package.create({ date_send: dateSend, city: origin }).fetch();
         if (newPackage !== undefined) {
             return exits.success({ isCreatedPackage: true, newPackage });

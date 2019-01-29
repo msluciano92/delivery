@@ -10,7 +10,7 @@ module.exports = {
         limite: {
             type: 'number',
         },
-        cant: {
+        cantPackages: {
             type: 'number',
             defaultsTo: 0,
         },

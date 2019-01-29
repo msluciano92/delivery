@@ -3,11 +3,11 @@ const sails = require('sails');
 describe('POST /package/create-send-package', () => {
     beforeEach((done) => {
         app.post('/warehouse').send({
-            id: 1, codigo: 'WHO1', city: 'Córdoba, Argentina', limite: 4, cant: 0,
+            id: 1, codigo: 'WHO1', city: 'Córdoba, Argentina', limite: 4, cantPackages: 0,
         }).end((err) => {
             if (err) throw err;
             app.post('/warehouse').send({
-                id: 2, codigo: 'WHO2', city: 'Buenos Aires, Argentina', limite: 3, cant: 0,
+                id: 2, codigo: 'WHO2', city: 'Buenos Aires, Argentina', limite: 3, cantPackages: 0,
             }).end((err) => {
                 if (err) throw err;
                 done();
@@ -21,15 +21,15 @@ describe('POST /package/create-send-package', () => {
         done();
     });
 
-    it('Return package transfer and create. Warehouse propierty cant add one.', (done) => {
+    it('Return package transfer and create. Warehouse propierty cantPackages add one.', (done) => {
         app
             .get('/warehouse/2')
             .end((err, res) => {
                 if (err) throw err;
-                expect(0).toBe(res.body.cant);
+                expect(0).toBe(res.body.cantPackages);
                 app
                     .post('/package/create-send-package')
-                    .send({ date_send: '2019-01-01', city: 'La Plata, Buenos Aires, Argentina' })
+                    .send({ dateSend: '2019-01-01', city: 'La Plata, Buenos Aires, Argentina' })
                     .expect(201)
                     .end((err, res) => {
                         if (err) throw err;
@@ -39,7 +39,7 @@ describe('POST /package/create-send-package', () => {
                             .get('/warehouse/2')
                             .end((err, res) => {
                                 if (err) throw err;
-                                expect(1).toBe(res.body.cant);
+                                expect(1).toBe(res.body.cantPackages);
                                 done();
                             });
                     });
@@ -79,7 +79,7 @@ describe('POST /package/create-send-package', () => {
                 expect(0).toBe(res.body.length);
                 app
                     .post('/package/create-send-package')
-                    .send({ date_send: '2018-11-02' })
+                    .send({ dateSend: '2018-11-02' })
                     .expect(400)
                     .end((err, res) => {
                         if (err) throw err;
@@ -124,11 +124,11 @@ describe('POST /package/create-send-package', () => {
 describe('POST /package/create-send-package - special case, satured warehouses ', () => {
     beforeEach((done) => {
         app.post('/warehouse').send({
-            id: 1, codigo: 'WHO1', city: 'Córdoba, Argentina', limite: 4, cant: 4,
+            id: 1, codigo: 'WHO1', city: 'Córdoba, Argentina', limite: 4, cantPackages: 4,
         }).end((err) => {
             if (err) throw err;
             app.post('/warehouse').send({
-                id: 2, codigo: 'WHO2', city: 'Buenos Aires, Argentina', limite: 3, cant: 3,
+                id: 2, codigo: 'WHO2', city: 'Buenos Aires, Argentina', limite: 3, cantPackages: 3,
             }).end((err) => {
                 if (err) throw err;
                 done();
@@ -150,7 +150,7 @@ describe('POST /package/create-send-package - special case, satured warehouses '
                 expect(0).toBe(res.body.length);
                 app
                     .post('/package/create-send-package')
-                    .send({ date_send: '2019-01-01', city: 'La Plata, Buenos Aires, Argentina' })
+                    .send({ dateSend: '2019-01-01', city: 'La Plata, Buenos Aires, Argentina' })
                     .expect(400)
                     .end((err, res) => {
                         if (err) throw err;
@@ -171,15 +171,15 @@ describe('POST /package/create-send-package - special case, satured warehouses '
 describe('PUT /package/send-package', () => {
     beforeEach((done) => {
         app.post('/package').send({
-            id: 1, date_send: '2018-12-12', city: 'Rosario, Argentina', state: 'In warehouse', warehouse_id: 1,
+            id: 1, dateSend: '2018-12-12', city: 'Rosario, Argentina', state: 'In warehouse', warehouseId: 1,
         }).end((err) => {
             if (err) throw err;
             app.post('/warehouse').send({
-                id: 1, codigo: 'WHO1', city: 'Córdoba, Argentina', limite: 4, cant: 1,
+                id: 1, codigo: 'WHO1', city: 'Córdoba, Argentina', limite: 4, cantPackages: 1,
             }).end((err) => {
                 if (err) throw err;
                 app.post('/warehouse').send({
-                    id: 2, codigo: 'WHO2', city: 'Buenos Aires, Argentina', limite: 3, cant: 1,
+                    id: 2, codigo: 'WHO2', city: 'Buenos Aires, Argentina', limite: 3, cantPackages: 1,
                 }).end((err) => {
                     if (err) throw err;
                     done();
@@ -194,12 +194,12 @@ describe('PUT /package/send-package', () => {
         done();
     });
 
-    it('Return is package send. Warehouse propierty cant substract one.', (done) => {
+    it('Return is package send. Warehouse propierty cantPackages substract one.', (done) => {
         app
             .get('/warehouse/1')
             .end((err, res) => {
                 if (err) throw err;
-                expect(1).toBe(res.body.cant);
+                expect(1).toBe(res.body.cantPackages);
                 app
                     .put('/package/send-package')
                     .send({ id: 1 })
@@ -212,7 +212,7 @@ describe('PUT /package/send-package', () => {
                             .get('/warehouse/1')
                             .end((err, res) => {
                                 if (err) throw err;
-                                expect(0).toBe(res.body.cant);
+                                expect(0).toBe(res.body.cantPackages);
                                 done();
                             });
                     });
@@ -258,14 +258,14 @@ describe('PUT /package/send-package', () => {
     });
 });
 
-describe('PUT /package/send-package - special case, warehouse_id in package undefined', () => {
+describe('PUT /package/send-package - special case, warehouseId in package undefined', () => {
     beforeEach((done) => {
         app.post('/package').send({
-            id: 1, date_send: '2018-12-12', city: 'Rosario, Argentina', state: 'In warehouse', warehouse_id: 3,
+            id: 1, dateSend: '2018-12-12', city: 'Rosario, Argentina', state: 'In warehouse', warehouseId: 3,
         }).end((err) => {
             if (err) throw err;
             app.post('/warehouse').send({
-                id: 1, codigo: 'WHO1', city: 'Córdoba, Argentina', limite: 4, cant: 1,
+                id: 1, codigo: 'WHO1', city: 'Córdoba, Argentina', limite: 4, cantPackages: 1,
             }).end((err) => {
                 if (err) throw err;
                 done();
@@ -279,12 +279,12 @@ describe('PUT /package/send-package - special case, warehouse_id in package unde
         done();
     });
 
-    it('Return error, loading warehouse. Warehouse cant not modify.', (done) => {
+    it('Return error, loading warehouse. Warehouse cantPackages not modify.', (done) => {
         app
             .get('/warehouse/1')
             .end((err, res) => {
                 if (err) throw err;
-                expect(1).toBe(res.body.cant);
+                expect(1).toBe(res.body.cantPackages);
                 app
                     .put('/package/send-package')
                     .send({ id: 1 })
@@ -297,7 +297,7 @@ describe('PUT /package/send-package - special case, warehouse_id in package unde
                             .get('/warehouse/1')
                             .end((err, res) => {
                                 if (err) throw err;
-                                expect(1).toBe(res.body.cant);
+                                expect(1).toBe(res.body.cantPackages);
                                 done();
                             });
                     });
@@ -308,11 +308,11 @@ describe('PUT /package/send-package - special case, warehouse_id in package unde
 describe('PUT /package/send-package - Send package when invalid state', () => {
     beforeEach((done) => {
         app.post('/package').send({
-            id: 1, date_send: '2018-12-12', city: 'Rosario, Argentina', state: 'In destination', warehouse_id: 1,
+            id: 1, dateSend: '2018-12-12', city: 'Rosario, Argentina', state: 'In destination', warehouseId: 1,
         }).end((err) => {
             if (err) throw err;
             app.post('/warehouse').send({
-                id: 1, cod: 'WH01', city: 'Buenos Aires, Argentina', limite: 5, cant: 2,
+                id: 1, cod: 'WH01', city: 'Buenos Aires, Argentina', limite: 5, cantPackages: 2,
             }).end((err) => {
                 if (err) throw err;
                 done();
@@ -326,12 +326,12 @@ describe('PUT /package/send-package - Send package when invalid state', () => {
         done();
     });
 
-    it('Return error, loading package. Invalid state. Warehouse cant not modify.', (done) => {
+    it('Return error, loading package. Invalid state. Warehouse cantPackages not modify.', (done) => {
         app
             .get('/warehouse/1')
             .end((err, res) => {
                 if (err) throw err;
-                expect(2).toBe(res.body.cant);
+                expect(2).toBe(res.body.cantPackages);
                 app
                     .put('/package/send-package')
                     .send({ id: 1 })
@@ -343,7 +343,7 @@ describe('PUT /package/send-package - Send package when invalid state', () => {
                             .get('/warehouse/1')
                             .end((err, res) => {
                                 if (err) throw err;
-                                expect(2).toBe(res.body.cant);
+                                expect(2).toBe(res.body.cantPackages);
                                 done();
                             });
                     });

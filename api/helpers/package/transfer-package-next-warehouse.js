@@ -37,7 +37,7 @@ module.exports = {
             const priceKm = 0.2; //  ... (price = 1 USD * 5 km)
             const penality = 70; //  ... (70 USD X Day)
             // ... calcula si le conviene  multa
-            if ((resultDistance * priceKm) < penality && (warehouse.cant < warehouse.limite)) {
+            if ((resultDistance * priceKm) < penality && (warehouse.cantPackages < warehouse.limite)) {
                 // ... Paga multa, a menos que no tenga lugar físico ..
                 const newPackage = inputs.package;
                 return exits.success(await sails.helpers.package.sendWarehouse.with({ warehouse, package: newPackage }));

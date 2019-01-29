@@ -2,8 +2,8 @@ module.exports = {
     async createPackageAndSendWarehouse(req, res) {
         try {
             const input = req.body;
-            if (input.city !== undefined && input.date_send !== undefined && Object.keys(input).length === 2) {
-                const { status, message } = await sails.helpers.warehouse.sendPackageWarehouse.with({ city: input.city, date_send_package: input.date_send });
+            if (input.city !== undefined && input.dateSend !== undefined && Object.keys(input).length === 2) {
+                const { status, message } = await sails.helpers.warehouse.sendPackageWarehouse.with({ city: input.city, dateSendPackage: input.dateSend });
                 res.status(status).json({ status, message });
             } else {
                 res.status(400).json({ status: 400, message: 'Missing parameters. Or invalid numbers parameters' });

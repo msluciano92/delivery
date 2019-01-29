@@ -8,7 +8,7 @@ module.exports = {
         city: {
             type: 'string',
         },
-        date_send_package: {
+        dateSendPackage: {
             type: 'string',
         },
     },
@@ -23,8 +23,8 @@ module.exports = {
     async fn(inputs, exits) {
         let isSendPackage = false;
         const origin = inputs.city;
-        const dateSend = inputs.date_send_package;
-        const { isCreatedPackage, newPackage } = await sails.helpers.package.create.with({ city: origin, date_send_package: dateSend });
+        const dateSend = inputs.dateSendPackage;
+        const { isCreatedPackage, newPackage } = await sails.helpers.package.create.with({ city: origin, dateSendPackage: dateSend });
         const resp = {};
         resp.status = 400;
         resp.message = 'Error receiving the package in warehouse';

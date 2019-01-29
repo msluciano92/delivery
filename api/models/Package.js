@@ -5,7 +5,7 @@ module.exports = {
             type: 'string',
             defaultsTo: 'Received',
         },
-        date_send: {
+        dateSend: {
             type: 'string',
             required: true,
         },
@@ -13,7 +13,7 @@ module.exports = {
             type: 'string',
             required: true,
         },
-        warehouse_id: {
+        warehouseId: {
             type: 'number',
         },
     },
