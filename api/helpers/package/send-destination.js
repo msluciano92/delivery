@@ -24,8 +24,8 @@ module.exports = {
         const packageToSend = inputs.package;
         const updPackage = await Package.updateOne({ id: packageToSend.id }).set({ state: 'In destination' });
         if (updPackage !== undefined) {
-            const cant = warehouse.cant - 1;
-            const updWarehouse = await Warehouse.updateOne({ id: warehouse.id }).set({ cant });
+            const cantPackages = warehouse.cantPackages - 1;
+            const updWarehouse = await Warehouse.updateOne({ id: warehouse.id }).set({ cantPackages });
             if (updWarehouse !== undefined) {
                 return exits.success(true);
             }

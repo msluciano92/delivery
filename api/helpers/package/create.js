@@ -24,7 +24,7 @@ module.exports = {
     async fn(inputs, exits) {
         const origin = inputs.city;
         const dateSend = inputs.dateSendPackage;
-        const newPackage = await Package.create({ date_send: dateSend, city: origin }).fetch();
+        const newPackage = await Package.create({ dateSend, city: origin }).fetch();
         if (newPackage !== undefined) {
             return exits.success({ isCreatedPackage: true, newPackage });
         }
