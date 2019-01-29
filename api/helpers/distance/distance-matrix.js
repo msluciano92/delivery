@@ -1,7 +1,6 @@
 const distance = require('google-distance-matrix');
 
 module.exports = {
-
     friendlyName: 'Distance matrix',
 
     description: 'returns the distance between two or more locations',
@@ -21,7 +20,7 @@ module.exports = {
                 const elem = warehouse.city;
                 return elem;
             });
-            const apiKey = 'AIzaSyCx7mYJLJRDPdyynRdX4UGQBY79NTtQXYM';
+            const apiKey = sails.config.distances.apiKey;
             distance.key(apiKey);
             return distance.matrix(origins, destinations, (err, distances) => {
                 if (!err && distances.status === 'OK') {
